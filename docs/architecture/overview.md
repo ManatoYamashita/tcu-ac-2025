@@ -54,7 +54,7 @@ manapuraza blog は、Markdown ベースの技術ブログシステムです。�
 ## ディレクトリ構成
 
 ```
-tcu-ac-2025/
+crypto-blogs/
 ├── app/                          # Next.js App Router
 │   ├── actions/                  # Server Actions
 │   │   └── validate-answer.ts    # 回答検証ロジック

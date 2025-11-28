@@ -23,8 +23,8 @@ git --version
 GitHubからプロジェクトをクローンします：
 
 ```bash
-git clone https://github.com/ManatoYamashita/tcu-ac-2025.git
-cd tcu-ac-2025
+git clone https://github.com/ManatoYamashita/crypto-blogs.git
+cd crypto-blogs
 ```
 
 ## 2. 依存パッケージのインストール

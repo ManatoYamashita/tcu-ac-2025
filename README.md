@@ -48,8 +48,8 @@ Markdownベースの技術ブログシステム。質問ベースの認証機能
 
 ```bash
 # リポジトリのクローン
-git clone https://github.com/ManatoYamashita/tcu-ac-2025.git
-cd tcu-ac-2025
+git clone https://github.com/ManatoYamashita/crypto-blogs.git
+cd crypto-blogs
 
 # 依存パッケージのインストール
 npm install
@@ -157,7 +157,7 @@ requiresAuth: false
 ## 📁 プロジェクト構造
 
 ```
-tcu-ac-2025/
+crypto-blogs/
 ├── app/                      # Next.js App Router
 │   ├── layout.tsx            # ルートレイアウト（メタデータ、JSON-LD）
 │   ├── page.tsx              # トップページ
@@ -288,6 +288,6 @@ MIT License - 詳細は [LICENSE](LICENSE) を参照してください。
 
 **開発に参加したい方へ**: [コントリビューションガイド](docs/guides/setup.md) をご覧ください。
 
-**問題を報告したい方へ**: [Issues](https://github.com/ManatoYamashita/tcu-ac-2025/issues) でお知らせください。
+**問題を報告したい方へ**: [Issues](https://github.com/ManatoYamashita/crypto-blogs/issues) でお知らせください。
 
-**質問がある方へ**: [Discussions](https://github.com/ManatoYamashita/tcu-ac-2025/discussions) で気軽にご質問ください。
+**質問がある方へ**: [Discussions](https://github.com/ManatoYamashita/crypto-blogs/discussions) で気軽にご質問ください。

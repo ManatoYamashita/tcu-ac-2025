@@ -1,7 +1,11 @@
 {
-  "name": "manapuraza-blog",
+  "name": "crypto-blogs",
   "version": "0.1.0",
   "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ManatoYamashita/crypto-blogs.git"
+  },
   "scripts": {
     "dev": "next dev",
     "build": "next build",
