@@ -13,6 +13,8 @@
 開発者向けの実践的なガイドドキュメント
 
 - [セットアップガイド](./guides/setup.md) - 環境構築と初期設定の手順
+- [ブログ記事追加ガイド](./guides/blog-posting.md) - 記事の作成・管理方法
+- [SEO設定ガイド](./guides/seo.md) - SEO機能の使い方と最適化
 - [管理者マニュアル](./guides/admin-manual.md) - 記事・質問管理の運用ガイド
 - [トラブルシューティング](./guides/troubleshooting.md) - よくある問題と解決方法
 
@@ -38,13 +40,21 @@ API仕様と関数の詳細なリファレンス
 
 - [システム仕様書](./requirement/spec.md) - 完全な要件定義と技術仕様
 
+### 🛠️ 開発者向け (dev/)
+
+開発フローとCI/CDに関するドキュメント
+
+- [ブランチ戦略](./dev/branch.md) - Git運用とブランチ命名規則
+- [CI/CDガイド](./dev/ci-cd.md) - GitHub Actions ワークフロー
+
 ## 推奨読み順
 
 ### 新規開発者向け
 
 1. [セットアップガイド](./guides/setup.md) - 環境構築
-2. [システム概要](./architecture/overview.md) - 全体像の把握
-3. [管理者マニュアル](./guides/admin-manual.md) - 基本的な運用方法
+2. [ブログ記事追加ガイド](./guides/blog-posting.md) - 記事の追加方法
+3. [システム概要](./architecture/overview.md) - 全体像の把握
+4. [管理者マニュアル](./guides/admin-manual.md) - 基本的な運用方法
 
 ### 技術詳細を知りたい方
 
