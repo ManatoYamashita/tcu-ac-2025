@@ -5,6 +5,12 @@ import QuestionForm from './_components/QuestionForm';
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import { generateBlogPostingJsonLd, generateBreadcrumbJsonLd } from '@/lib/utils/json-ld';
+import { SiteHeader } from '@/components/site-header';
+import { SiteFooter } from '@/components/site-footer';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Separator } from '@/components/ui/separator';
+import Link from 'next/link';
 
 type Props = {
   params: Promise<{ slug: string }>;
@@ -115,23 +121,32 @@ export default async function BlogPostPage({ params }: Props) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbJsonLd) }}
       />
-      <article className="max-w-4xl mx-auto p-8">
-        <h1 className="text-4xl font-bold mb-4">{post.title}</h1>
-        <p className="text-gray-600 mb-2">{post.date}</p>
-        <div className="flex gap-2 mb-8">
-          {post.categories.map((cat) => (
-            <span key={cat} className="px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded">
-              {cat}
-            </span>
-          ))}
-        </div>
-        <div className="prose max-w-none" dangerouslySetInnerHTML={{ __html: post.content }} />
-        <div className="mt-8 pt-8 border-t">
-          <a href="/blogs" className="text-blue-600 hover:underline">
-            ← 記事一覧に戻る
-          </a>
-        </div>
-      </article>
+      <div className="flex min-h-screen flex-col">
+        <SiteHeader />
+        <main className="flex-1 container py-6 lg:py-10">
+          <article className="prose prose-slate dark:prose-invert max-w-3xl mx-auto">
+            <h1 className="mb-2">{post.title}</h1>
+            <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
+              <time dateTime={post.date}>{post.date}</time>
+            </div>
+            <div className="flex flex-wrap gap-2 mb-8">
+              {post.categories.map((cat) => (
+                <Badge key={cat} variant="secondary">
+                  {cat}
+                </Badge>
+              ))}
+            </div>
+            <Separator className="my-4" />
+            <div dangerouslySetInnerHTML={{ __html: post.content }} />
+          </article>
+          <div className="max-w-3xl mx-auto mt-8 pt-8 border-t">
+            <Button variant="ghost" asChild>
+              <Link href="/blogs">← 記事一覧に戻る</Link>
+            </Button>
+          </div>
+        </main>
+        <SiteFooter />
+      </div>
     </>
   );
 }

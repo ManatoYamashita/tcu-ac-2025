@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { generateWebSiteJsonLd } from '@/lib/utils/json-ld';
+import { ThemeProvider } from './providers';
 
 const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
 
@@ -66,14 +67,23 @@ export default function RootLayout({
   const jsonLd = generateWebSiteJsonLd();
 
   return (
-    <html lang="ja">
+    <html lang="ja" suppressHydrationWarning>
       <head>
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }

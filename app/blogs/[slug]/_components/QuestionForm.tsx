@@ -1,8 +1,21 @@
 'use client';
 
-import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
 import { ClientQuestion, UserAnswer } from '@/lib/types';
 import { validateAnswers } from '@/app/actions/validate-answer';
+import { createQuestionFormSchema, QuestionFormValues } from '@/lib/schemas/question-form';
+import { SiteHeader } from '@/components/site-header';
+import { SiteFooter } from '@/components/site-footer';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { AlertCircle, CheckCircle2 } from 'lucide-react';
+import Link from 'next/link';
+import { useState } from 'react';
 
 type Props = {
   slug: string;
@@ -11,104 +24,132 @@ type Props = {
 };
 
 export default function QuestionForm({ slug, questionSetId, questions }: Props) {
-  const [answers, setAnswers] = useState<Record<string, string>>({});
   const [message, setMessage] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setIsLoading(true);
+  const questionIds = questions.map((q) => q.id);
+  const schema = createQuestionFormSchema(questionIds);
+
+  const form = useForm<QuestionFormValues>({
+    resolver: zodResolver(schema),
+    defaultValues: questionIds.reduce((acc, id) => ({ ...acc, [id]: '' }), {}),
+  });
+
+  const onSubmit = async (data: QuestionFormValues) => {
     setMessage('');
+    setIsSuccess(false);
 
     // 回答データを構築
     const userAnswers: UserAnswer[] = questions.map((q) => ({
       questionId: q.id,
-      answer: answers[q.id] || '',
+      answer: data[q.id] || '',
     }));
 
     // Server Actionsで検証
     const result = await validateAnswers(slug, questionSetId, userAnswers);
 
     setMessage(result.message);
-    setIsLoading(false);
+    setIsSuccess(result.success);
 
     if (result.success) {
       // 正解の場合、ページをリロードして記事を表示
-      window.location.reload();
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto p-8">
-      <h2 className="text-2xl font-bold mb-4">この記事を閲覧するには、以下の質問に答えてください</h2>
-      <form onSubmit={handleSubmit} className="space-y-6">
-        {questions.map((q) => (
-          <div key={q.id} className="border p-4 rounded-lg">
-            <label className="block font-semibold mb-2">{q.text}</label>
-
-            {q.imageUrl && (
-              <img src={q.imageUrl} alt="質問画像" className="mb-4 max-w-full h-auto rounded" />
-            )}
-
-            {q.type === 'text' && (
-              <input
-                type="text"
-                value={answers[q.id] || ''}
-                onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
-                className="w-full px-3 py-2 border rounded"
-                required
-              />
-            )}
-
-            {q.type === 'password' && (
-              <input
-                type="password"
-                value={answers[q.id] || ''}
-                onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
-                className="w-full px-3 py-2 border rounded"
-                required
-              />
-            )}
-
-            {q.type === 'choice' && q.options && (
-              <div className="space-y-2">
-                {q.options.map((option, idx) => (
-                  <label key={idx} className="flex items-center space-x-2">
-                    <input
-                      type="radio"
+    <div className="flex min-h-screen flex-col">
+      <SiteHeader />
+      <main className="flex-1 container py-6 lg:py-10">
+        <div className="max-w-2xl mx-auto">
+          <Card>
+            <CardHeader>
+              <CardTitle>認証が必要です</CardTitle>
+              <CardDescription>
+                この記事を閲覧するには、以下の質問に答えてください
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+                  {questions.map((q) => (
+                    <FormField
+                      key={q.id}
+                      control={form.control}
                       name={q.id}
-                      value={option}
-                      checked={answers[q.id] === option}
-                      onChange={(e) => setAnswers({ ...answers, [q.id]: e.target.value })}
-                      required
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>{q.text}</FormLabel>
+                          {q.imageUrl && (
+                            <div className="my-4">
+                              <img
+                                src={q.imageUrl}
+                                alt="質問画像"
+                                className="max-w-full h-auto rounded-lg border"
+                              />
+                            </div>
+                          )}
+                          <FormControl>
+                            {q.type === 'text' && (
+                              <Input type="text" placeholder="回答を入力してください" {...field} />
+                            )}
+                            {q.type === 'password' && (
+                              <Input type="password" placeholder="パスワードを入力してください" {...field} />
+                            )}
+                            {q.type === 'choice' && q.options && (
+                              <RadioGroup
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                                className="flex flex-col space-y-1"
+                              >
+                                {q.options.map((option, idx) => (
+                                  <FormItem key={idx} className="flex items-center space-x-3 space-y-0">
+                                    <FormControl>
+                                      <RadioGroupItem value={option} />
+                                    </FormControl>
+                                    <FormLabel className="font-normal cursor-pointer">
+                                      {option}
+                                    </FormLabel>
+                                  </FormItem>
+                                ))}
+                              </RadioGroup>
+                            )}
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
                     />
-                    <span>{option}</span>
-                  </label>
-                ))}
+                  ))}
+
+                  <Button type="submit" className="w-full" disabled={form.formState.isSubmitting}>
+                    {form.formState.isSubmitting ? '送信中...' : '回答を送信'}
+                  </Button>
+
+                  {message && (
+                    <Alert variant={isSuccess ? 'default' : 'destructive'}>
+                      {isSuccess ? (
+                        <CheckCircle2 className="h-4 w-4" />
+                      ) : (
+                        <AlertCircle className="h-4 w-4" />
+                      )}
+                      <AlertDescription>{message}</AlertDescription>
+                    </Alert>
+                  )}
+                </form>
+              </Form>
+
+              <div className="mt-6">
+                <Button variant="ghost" asChild>
+                  <Link href="/blogs">← 記事一覧に戻る</Link>
+                </Button>
               </div>
-            )}
-          </div>
-        ))}
-
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:bg-gray-400"
-        >
-          {isLoading ? '送信中...' : '回答を送信'}
-        </button>
-
-        {message && (
-          <p className={`text-center ${message.includes('正解') ? 'text-green-600' : 'text-red-600'}`}>
-            {message}
-          </p>
-        )}
-      </form>
-      <div className="mt-8">
-        <a href="/blogs" className="text-blue-600 hover:underline">
-          ← 記事一覧に戻る
-        </a>
-      </div>
+            </CardContent>
+          </Card>
+        </div>
+      </main>
+      <SiteFooter />
     </div>
   );
 }
