@@ -91,32 +91,34 @@ export default function QuestionForm({ slug, questionSetId, questions }: Props) 
                               />
                             </div>
                           )}
-                          <FormControl>
-                            {q.type === 'text' && (
+                          {q.type === 'text' && (
+                            <FormControl>
                               <Input type="text" placeholder="回答を入力してください" {...field} />
-                            )}
-                            {q.type === 'password' && (
+                            </FormControl>
+                          )}
+                          {q.type === 'password' && (
+                            <FormControl>
                               <Input type="password" placeholder="パスワードを入力してください" {...field} />
-                            )}
-                            {q.type === 'choice' && q.options && (
-                              <RadioGroup
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                                className="flex flex-col space-y-1"
-                              >
-                                {q.options.map((option, idx) => (
-                                  <FormItem key={idx} className="flex items-center space-x-3 space-y-0">
-                                    <FormControl>
-                                      <RadioGroupItem value={option} />
-                                    </FormControl>
-                                    <FormLabel className="font-normal cursor-pointer">
-                                      {option}
-                                    </FormLabel>
-                                  </FormItem>
-                                ))}
-                              </RadioGroup>
-                            )}
-                          </FormControl>
+                            </FormControl>
+                          )}
+                          {q.type === 'choice' && q.options && (
+                            <RadioGroup
+                              onValueChange={field.onChange}
+                              defaultValue={field.value}
+                              className="flex flex-col space-y-1"
+                            >
+                              {q.options.map((option, idx) => (
+                                <FormItem key={idx} className="flex items-center space-x-3 space-y-0">
+                                  <FormControl>
+                                    <RadioGroupItem value={option} />
+                                  </FormControl>
+                                  <FormLabel className="font-normal cursor-pointer">
+                                    {option}
+                                  </FormLabel>
+                                </FormItem>
+                              ))}
+                            </RadioGroup>
+                          )}
                           <FormMessage />
                         </FormItem>
                       )}
