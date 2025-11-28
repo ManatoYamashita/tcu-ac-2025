@@ -1,5 +1,22 @@
 import Link from 'next/link';
 import { getAllPosts } from '@/lib/posts';
+import type { Metadata } from 'next';
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
+export const metadata: Metadata = {
+  title: '記事一覧',
+  description: 'manapuraza blog の技術記事一覧。Web開発、プログラミング、技術に関する記事を掲載しています。',
+  openGraph: {
+    title: '記事一覧 | manapuraza blog',
+    description: 'manapuraza blog の技術記事一覧。Web開発、プログラミング、技術に関する記事を掲載しています。',
+    url: `${baseUrl}/blogs`,
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/blogs',
+  },
+};
 
 export default async function BlogListPage() {
   const posts = await getAllPosts();

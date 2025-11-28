@@ -1,4 +1,21 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
+
+const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+
+export const metadata: Metadata = {
+  title: 'ホーム',
+  description: 'manapuraza blog - Markdownベースの技術ブログ。Web開発、プログラミング、技術記事を発信しています。',
+  openGraph: {
+    title: 'manapuraza blog',
+    description: 'Markdownベースの技術ブログ - Web開発、プログラミング、技術記事を発信',
+    url: baseUrl,
+    type: 'website',
+  },
+  alternates: {
+    canonical: '/',
+  },
+};
 
 export default function HomePage() {
   return (
