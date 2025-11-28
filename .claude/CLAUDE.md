@@ -24,9 +24,24 @@
   - `docs/FRONTEND_IMPROVEMENTS.md`（改善メモ）
 
 ## 索引（参照）
-- ドキュメントのエンドポイント: `docs/index.md`
-- コーディング規約: `docs/coding-standards.md`
-- Import移行ガイド: `docs/import-path-migration.md`
-- ブランチ戦略: `docs/branch-strategy.md`
+
+### 主要ドキュメント
+- **ドキュメントのエントリポイント**: `docs/index.md`
+- **システム仕様書**: `docs/requirement/spec.md`
+
+### ガイド（guides/）
+- **セットアップガイド**: `docs/guides/setup.md`
+- **管理者マニュアル**: `docs/guides/admin-manual.md`
+- **トラブルシューティング**: `docs/guides/troubleshooting.md`
+
+### アーキテクチャ（architecture/）
+- **システム概要**: `docs/architecture/overview.md`
+- **セキュリティモデル**: `docs/architecture/security.md`
+- **データフロー**: `docs/architecture/data-flow.md`
+
+### リファレンス（reference/）
+- **Server Actions**: `docs/reference/server-actions.md`
+- **ユーティリティ関数**: `docs/reference/utilities.md`
+- **型定義**: `docs/reference/types.md`
 
 最終更新日: 2025-11-28
